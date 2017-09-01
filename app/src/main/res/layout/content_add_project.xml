@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.enterprise.plarent.todoist.activities.AddProjectActivity"
+    tools:showIn="@layout/activity_add_project">
+
+    <EditText
+        android:id="@+id/txt_company_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:hint="@string/new_project_name"
+        android:inputType="text"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textColor="@android:color/black"
+        android:textSize="18dp" />
+
+    <ImageView
+        android:id="@+id/colorChoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_company_name"
+        android:layout_alignStart="@+id/txt_company_name"
+        android:layout_below="@+id/txt_company_name"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="6dp"
+        app:srcCompat="@drawable/red" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txt_company_name"
+        android:layout_alignRight="@+id/txt_company_name"
+        android:layout_below="@+id/txt_company_name"
+        android:alwaysDrawnWithCache="false"
+        android:layout_alignLeft="@+id/txt_company_name"
+        android:layout_alignStart="@+id/txt_company_name" />
+
+    <TextView
+        android:id="@+id/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="40dp"
+        android:text="@string/initial_color_code"
+        android:textSize="18dp"
+        android:layout_alignBottom="@+id/spinner2"
+        android:layout_alignLeft="@+id/spinner2"
+        android:layout_alignStart="@+id/spinner2"
+        android:layout_alignRight="@+id/spinner2"
+        android:layout_alignEnd="@+id/spinner2" />
+
+</RelativeLayout>

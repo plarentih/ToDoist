@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.enterprise.plarent.todoist.activities.AddTaskActivity"
+    tools:showIn="@layout/activity_add_task">
+
+    <EditText
+        android:id="@+id/txt_task_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:hint="@string/hint_task_name"
+        android:inputType="text"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/img_project"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/folder"
+        android:layout_below="@+id/txt_task_name"
+        android:layout_alignBottom="@+id/spinner2"
+        android:layout_alignLeft="@+id/spinner2"
+        android:layout_alignStart="@+id/spinner2" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alwaysDrawnWithCache="false"
+        android:layout_below="@+id/txt_task_name"
+        android:layout_alignLeft="@+id/text_color"
+        android:layout_alignStart="@+id/text_color"
+        android:layout_alignRight="@+id/text_color"
+        android:layout_alignEnd="@+id/text_color" />
+
+    <TextView
+        android:id="@+id/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="35dp"
+        android:text="@string/project_label"
+        android:textSize="18sp"
+        android:layout_alignBottom="@+id/spinner2"
+        android:layout_alignLeft="@+id/txt_task_name"
+        android:layout_alignStart="@+id/txt_task_name"
+        android:layout_alignRight="@+id/txt_task_name"
+        android:layout_alignEnd="@+id/txt_task_name" />
+
+    <TextView
+        android:id="@+id/text_project"
+        android:layout_width="120dp"
+        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:text="@string/project_name"
+        android:layout_alignBaseline="@+id/text_color"
+        android:layout_alignBottom="@+id/text_color"
+        android:layout_alignRight="@+id/spinner2"
+        android:layout_alignEnd="@+id/spinner2" />
+
+    <ImageView
+        android:id="@+id/img_priority"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="46dp"
+        app:srcCompat="@drawable/priority_flag"
+        android:layout_below="@+id/img_project"
+        android:layout_alignLeft="@+id/img_project"
+        android:layout_alignStart="@+id/img_project" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spinner2"
+        android:layout_alignLeft="@+id/img_priority"
+        android:layout_alignRight="@+id/spinner2"
+        android:layout_alignStart="@+id/img_priority"
+        android:layout_alignTop="@+id/img_priority" />
+
+    <TextView
+        android:id="@+id/txt_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/priority_label"
+        android:paddingLeft="35dp"
+        android:layout_alignTop="@+id/img_priority"
+        android:layout_alignLeft="@+id/img_priority"
+        android:layout_alignStart="@+id/img_priority"
+        android:layout_alignRight="@+id/spinner"
+        android:layout_alignEnd="@+id/spinner" />
+
+    <TextView
+        android:id="@+id/txt_priority_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/text_project"
+        android:layout_alignStart="@+id/text_project"
+        android:layout_alignTop="@+id/txt_priority"
+        android:text="@string/priority_name"
+        android:textSize="18sp" />
+
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/image_priority"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_weight="0.03"
+        android:src="@drawable/oil" />
+
+    <TextView
+        android:id="@+id/priority_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15sp"
+        android:layout_marginTop="20sp"
+        android:ellipsize="end"
+        android:text="@string/priority_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20dp" />
+</LinearLayout>

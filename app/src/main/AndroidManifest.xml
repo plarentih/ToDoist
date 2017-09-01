@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.enterprise.plarent.todoist">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/MyMaterialTheme"
+        android:name="com.enterprise.plarent.todoist.orm.ToDoApp">
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.AddProjectActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainActivity"/>
+        <activity
+            android:name=".activities.TaskListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.AddTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.ListPrioritiesActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data
+            android:name="AA_SERIALIZERS"
+            android:value="my.package.CustomTypeSerializer,my.package.AnotherCustomeTypeSerializer"/>
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="com.enterprise.plarent.todoist.model.Project, com.enterprise.plarent.todoist.model.Task" />
+        <meta-data android:name="AA_DB_NAME" android:value="Todo.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+    </application>
+</manifest>

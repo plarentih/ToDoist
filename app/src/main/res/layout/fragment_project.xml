@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="105dp">
+
+    <TextView
+        android:id="@+id/txt_empty_list_projects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:text="@string/empty_project_list"
+        android:textAppearance="?android:attr/textAppearance"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/projectListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </ListView>
+
+    <Button
+        android:id="@+id/addProject_on_empty_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_project_txt"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
