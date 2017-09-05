@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.activeandroid.Model;
 import com.activeandroid.query.Select;
 import com.enterprise.plarent.todoist.R;
 import com.enterprise.plarent.todoist.activities.AddProjectActivity;
@@ -37,7 +38,7 @@ public class ProjectFragment extends Fragment {
     private Button addProjectBtn;
     private TextView emptyProjectList;
     private ProjectAdapter projectAdapter;
-    private List<Project> projectList;
+    private ArrayList<Project> projectList;
     private Button addOnEmptyList;
 
     public ProjectFragment(){
@@ -58,10 +59,11 @@ public class ProjectFragment extends Fragment {
         projectListView.addFooterView(footerL);
         addOnEmptyList = (Button) view.findViewById(R.id.addProject_on_empty_list);
 
-        projectList = getAll();
+        projectList = (ArrayList<Project>) getAll();
         if(projectList != null && !projectList.isEmpty()){
             addOnEmptyList.setVisibility(View.GONE);
             projectAdapter = new ProjectAdapter(getContext(), projectList);
+            //projectAdapter.swapItems(projectList);
             projectListView.setAdapter(projectAdapter);
         }else {
             emptyProjectList.setVisibility(View.VISIBLE);
@@ -91,8 +93,6 @@ public class ProjectFragment extends Fragment {
                 Bundle bundle = new Bundle();
 
                 Intent intent = new Intent(getContext(), TaskListActivity.class);
-                //intent.putExtra(TaskListActivity.EXTRA_SELECTED_PROJECT_ID, clickedProject);
-                //intent.putExtra(TaskListActivity.SELECTED_ID, sendId);
                 bundle.putSerializable("A", clickedProject);
                 bundle.putLong(TaskListActivity.SELECTED_ID, sendId);
                 intent.putExtras(bundle);
@@ -107,12 +107,7 @@ public class ProjectFragment extends Fragment {
                 .from(Project.class)
                 .execute();
     }
-    /*public static List<Project> getAll(long id) {
-        return new Select()
-                .from(Project.class)
-                .where("id = ?", id)
-                .execute();
-    }*/
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE_ADD_PROJECT){
@@ -133,8 +128,7 @@ public class ProjectFragment extends Fragment {
                             projectAdapter = new ProjectAdapter(getContext(), projectList);
                             projectListView.setAdapter(projectAdapter);
                         }else {
-                            projectAdapter.setItems(projectList);
-                            projectAdapter.notifyDataSetChanged();
+                            projectAdapter.swapItems(getAll());
                         }
                     }
                 }

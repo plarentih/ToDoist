@@ -122,9 +122,6 @@ public class TaskListActivity extends AppCompatActivity {
                 if(taskList == null || !taskList.isEmpty()){
                     taskList = new ArrayList<Task>();
                 }
-                if(taskDAO == null){
-                    taskDAO = new TaskDAO(this);
-                }
                 taskList = getTasksOfProject(receivedId);
 
                 sortTasksOnPriority();

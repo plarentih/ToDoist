@@ -26,6 +26,7 @@ import com.enterprise.plarent.todoist.R;
 import com.enterprise.plarent.todoist.model.Task;
 import com.enterprise.plarent.todoist.dao.TaskDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -42,7 +43,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private AlertDialog priorityDialog;
     private ProjectAdapter projectAdapter;
     private PriorityDialogAdapter priorityDialogAdapter;
-    private List<Project> projectList;
+    private ArrayList<Project> projectList;
     private long receivedId;
     private long taskId;
 
@@ -121,7 +122,7 @@ public class AddTaskActivity extends AppCompatActivity {
         priorityDialogAdapter = new PriorityDialogAdapter(this, priorityNames, priorityColors);
         projectDAO = new ProjectDAO(this);
         taskDAO = new TaskDAO(this);
-        projectList = getAllProjects();
+        projectList = (ArrayList<Project>) getAllProjects();
         projectAdapter = new ProjectAdapter(this, projectList);
     }
 

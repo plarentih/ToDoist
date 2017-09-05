@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.enterprise.plarent.todoist.model.Project;
 import com.enterprise.plarent.todoist.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,22 +23,21 @@ import java.util.List;
 
 public class ProjectAdapter extends ArrayAdapter<Project> {
 
-    private List<Project> items;
-    private Button button;
+    private ArrayList<Project> items = new ArrayList<>();
 
     public static class ViewHolder{
         TextView title;
         ImageView colorCode;
     }
 
-    public ProjectAdapter(Context context, List <Project> projectsList){
-        super(context, 0, (List<Project>) projectsList);
+    public ProjectAdapter(Context context, ArrayList<Project> projectsList){
+        super(context, 0);
+        items.addAll(projectsList);
     }
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //Project project = new Project();
-        Project project = getItem(position);
+        Project project = items.get(position);
         ViewHolder viewHolder;
         if(convertView == null){
             viewHolder = new ViewHolder();
@@ -53,7 +53,13 @@ public class ProjectAdapter extends ArrayAdapter<Project> {
         return convertView;
     }
 
-    public void setItems(List<Project> list){
+    public void setItems(ArrayList<Project> list){
         this.items = list;
+    }
+
+    public void swapItems(List<Project> newItems){
+        items.clear();
+        items.addAll(newItems);
+        notifyDataSetChanged();
     }
 }
