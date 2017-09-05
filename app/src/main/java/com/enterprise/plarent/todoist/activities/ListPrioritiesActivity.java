@@ -6,8 +6,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import com.activeandroid.query.Select;
 import com.enterprise.plarent.todoist.R;
 import com.enterprise.plarent.todoist.adapters.TaskAdapter;
 import com.enterprise.plarent.todoist.model.Task;
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class ListPrioritiesActivity extends AppCompatActivity {
 
-    private ListView listView;
+    private ExpandableListView listView;
     private TaskDAO taskDAO;
     private List<Task> taskList;
     private TaskPriorityAdapter taskAdapter;
@@ -30,7 +32,7 @@ public class ListPrioritiesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_priorities);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        listView = (ListView)findViewById(R.id.taskListView);
+        listView = (ExpandableListView)findViewById(R.id.taskListView);
         taskDAO = new TaskDAO(this);
         Intent intent = getIntent();
         String pri = (String) intent.getSerializableExtra("PRIORITY");
@@ -49,8 +51,8 @@ public class ListPrioritiesActivity extends AppCompatActivity {
                 priority = Task.TaskPriority.LOWEST;
                 break;
         }
-        taskList = taskDAO.getTasksOnPriority(priority);
-        taskAdapter = new TaskPriorityAdapter(getBaseContext(), taskList);
+        taskList = getTasksOfPriority(priority);
+        taskAdapter = new TaskPriorityAdapter(this, taskList);
         listView.setAdapter(taskAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -62,6 +64,24 @@ public class ListPrioritiesActivity extends AppCompatActivity {
                 startActivityForResult(intent, TaskListActivity.REQUEST_CODE_ADD_TASK);
             }
         });
+
+        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousGroup = -1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if(groupPosition != previousGroup){
+                    listView.collapseGroup(previousGroup);
+                }
+                previousGroup = groupPosition;
+            }
+        });
+    }
+
+    public static List<Task> getTasksOfPriority(Task.TaskPriority taskPriority){
+        return new Select()
+                .from(Task.class)
+                .where("TaskPriority = ?", taskPriority)
+                .execute();
     }
 
     @Override
@@ -74,7 +94,7 @@ public class ListPrioritiesActivity extends AppCompatActivity {
                 if(taskDAO == null){
                     taskDAO = new TaskDAO(this);
                 }
-                taskList = taskDAO.getTasksOnPriority(priority);
+                taskList = getTasksOfPriority(priority);
 
                 if(taskAdapter == null){
                     taskAdapter = new TaskPriorityAdapter(this, taskList);
@@ -83,9 +103,7 @@ public class ListPrioritiesActivity extends AppCompatActivity {
                         listView.setVisibility(View.VISIBLE);
                     }
                 }else {
-                    taskAdapter.clear();
-                    taskAdapter.addAll(taskList);
-                    //taskAdapter.setTaskItems(sortTasksOnPriority());
+                    taskAdapter.setTaskItemsat(taskList);
                     taskAdapter.notifyDataSetChanged();
                 }
             }

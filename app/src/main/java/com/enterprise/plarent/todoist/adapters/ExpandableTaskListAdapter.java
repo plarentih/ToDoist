@@ -2,6 +2,7 @@ package com.enterprise.plarent.todoist.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enterprise.plarent.todoist.R;
+import com.enterprise.plarent.todoist.activities.AddTaskActivity;
+import com.enterprise.plarent.todoist.activities.TaskListActivity;
 import com.enterprise.plarent.todoist.dao.TaskDAO;
 import com.enterprise.plarent.todoist.model.Task;
 
@@ -114,7 +118,22 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     Task task = (Task)getGroup(groupPosition);
-
+                    task.delete();
+                    taskList.clear();
+                    taskList.addAll(taskList);
+                    setTaskItems(taskList);
+                    Toast.makeText(v.getContext(), "Task was deleted!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            thisHolderChild.editImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Task task = (Task)getGroup(groupPosition);
+                    long id = task.getId();
+                    Intent intent = new Intent(v.getContext(), AddTaskActivity.class);
+                    intent.putExtra("EDIT_TASK", task);
+                    intent.putExtra("TASK_ID", id);
+                    activity.startActivity(intent);
                 }
             });
 
@@ -128,5 +147,9 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void setTaskItems(List<Task> listTask){
+        this.taskList = listTask;
     }
 }

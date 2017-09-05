@@ -49,7 +49,7 @@ public class ProjectFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_project, container, false);
         this.projectListView = (ListView)view.findViewById(R.id.projectListView);
         this.emptyProjectList = (TextView)view.findViewById(R.id.txt_empty_list_projects);
@@ -87,11 +87,15 @@ public class ProjectFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Project clickedProject = projectAdapter.getItem(position);
-                int sendId = clickedProject.getId().intValue();
+                long sendId = clickedProject.getId();
+                Bundle bundle = new Bundle();
 
                 Intent intent = new Intent(getContext(), TaskListActivity.class);
-                intent.putExtra(TaskListActivity.EXTRA_SELECTED_PROJECT_ID, clickedProject);
-                intent.putExtra(TaskListActivity.SELECTED_ID, sendId);
+                //intent.putExtra(TaskListActivity.EXTRA_SELECTED_PROJECT_ID, clickedProject);
+                //intent.putExtra(TaskListActivity.SELECTED_ID, sendId);
+                bundle.putSerializable("A", clickedProject);
+                bundle.putLong(TaskListActivity.SELECTED_ID, sendId);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -103,7 +107,12 @@ public class ProjectFragment extends Fragment {
                 .from(Project.class)
                 .execute();
     }
-
+    /*public static List<Project> getAll(long id) {
+        return new Select()
+                .from(Project.class)
+                .where("id = ?", id)
+                .execute();
+    }*/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE_ADD_PROJECT){

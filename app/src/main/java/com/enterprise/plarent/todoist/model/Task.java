@@ -70,7 +70,6 @@ public class Task extends Model implements Serializable{
             case LOWEST:
                 return R.drawable.whitep;
         }
-
         return R.drawable.redp;
     }
 }

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
-        android:name="com.enterprise.plarent.todoist.orm.ToDoApp">
+        android:name="com.enterprise.plarent.todoist.orm.MyApplication">
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -35,11 +35,11 @@
 
         <meta-data
             android:name="AA_SERIALIZERS"
-            android:value="my.package.CustomTypeSerializer,my.package.AnotherCustomeTypeSerializer"/>
+            android:value="my.package.CustomTypeSerializer,my.package.AnotherCustomTypeSerializer"/>
         <meta-data
             android:name="AA_MODELS"
             android:value="com.enterprise.plarent.todoist.model.Project, com.enterprise.plarent.todoist.model.Task" />
         <meta-data android:name="AA_DB_NAME" android:value="Todo.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+        <meta-data android:name="AA_DB_VERSION" android:value="3" />
     </application>
 </manifest>

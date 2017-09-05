@@ -43,8 +43,13 @@ public class AddTaskActivity extends AppCompatActivity {
     private ProjectAdapter projectAdapter;
     private PriorityDialogAdapter priorityDialogAdapter;
     private List<Project> projectList;
+    private long receivedId;
+    private long taskId;
 
     private Project project;
+    private Task selectedTask;
+
+    private Project gettedProject;
 
     private ProjectDAO projectDAO;
     private TaskDAO taskDAO;
@@ -65,30 +70,33 @@ public class AddTaskActivity extends AppCompatActivity {
         projectLabel = (TextView)findViewById(R.id.txt_priority);
 
         Intent intent = getIntent();
-        Task selectedTask = (Task) intent.getSerializableExtra("SELECTED_TASK");
+        selectedTask = (Task) intent.getSerializableExtra("EDIT_TASK");
+        taskId = intent.getLongExtra("TASK_ID", -1);
         Intent intenti = getIntent();
-        Project gettedProject = (Project) intenti.getSerializableExtra("PROJECT");
+        gettedProject = (Project) intenti.getSerializableExtra("PROJECT");
         Intent inter = getIntent();
         Enum receivedPriority = (Task.TaskPriority)inter.getSerializableExtra("PRIORITY");
+        receivedId = intent.getLongExtra("ID", -1);
 
         /*if(receivedPriority != null){
             priority_enum = (Task.TaskPriority) receivedPriority;
             projectLabel.setEnabled(false);
+            switch()
         }*/
 
         if(gettedProject == null){
         }else {
             projectName.setText(gettedProject.getProjectName());
             priority_enum = Task.TaskPriority.HIGH;
-            project = gettedProject;
+            project = getProjectById(receivedId);
         }
 
-        /*if(selectedTask == null){
+        if(selectedTask == null){
         }else {
             txtTaskName.setText(selectedTask.getTaskName());
             projectName.setText(selectedTask.getProject().getProjectName());
             taskPriority.setText(selectedTask.getTaskPriority().toString());
-        }*/
+        }
 
 
         txtColori.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +123,13 @@ public class AddTaskActivity extends AppCompatActivity {
         taskDAO = new TaskDAO(this);
         projectList = getAllProjects();
         projectAdapter = new ProjectAdapter(this, projectList);
+    }
+
+    public static Project getProjectById(long id){
+        return new Select()
+                .from(Project.class)
+                .where("id = ?", id)
+                .executeSingle();
     }
 
     public static List<Project> getAllProjects(){
@@ -193,7 +208,18 @@ public class AddTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_add_project){
+            Project pro = getProjectById(receivedId);
             Editable taskTitle = txtTaskName.getText();
+            if(selectedTask != null){
+                Task task = Task.load(Task.class, taskId);
+                task.taskName = taskTitle.toString();
+                task.taskPriority = priority_enum;
+                task.mProject = selectedTask.getProject();
+                task.save();
+                setResult(RESULT_OK);
+                finish();
+                return true;
+            }
             if(!TextUtils.isEmpty(taskTitle)){
                 Task createdTask = new Task();
                 createdTask.taskName = taskTitle.toString();
@@ -208,4 +234,6 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

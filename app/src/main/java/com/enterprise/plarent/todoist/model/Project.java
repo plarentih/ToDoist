@@ -20,7 +20,7 @@ public class Project extends Model implements Serializable {
     @Column(name = "Color")
     public Color color;
 
-    public List<Task> tasks(){
+    public List<Task> getTasks(){
         return getMany(Task.class, "Project");
     }
 

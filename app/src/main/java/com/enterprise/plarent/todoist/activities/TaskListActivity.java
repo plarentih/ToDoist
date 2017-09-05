@@ -54,15 +54,16 @@ public class TaskListActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         if(intent != null){
-            this.project = (Project)intent.getSerializableExtra(EXTRA_SELECTED_PROJECT_ID);
-            receivedId  = intent.getIntExtra(SELECTED_ID, -1);
+            project = (Project)getIntent().getSerializableExtra("A");
+            //this.project = (Project)intent.getSerializableExtra(EXTRA_SELECTED_PROJECT_ID);
+            receivedId  = intent.getLongExtra(SELECTED_ID, -1);
         }
 
         if(project != null){
-            taskList = getTasksOfProject(project);
-
+            taskList = getTasksOfProject(receivedId);
+            sortTasksOnPriority();
             if(taskList != null && !taskList.isEmpty()){
-                expandableTaskListAdapter = new ExpandableTaskListAdapter(this, sortTasksOnPriority());
+                expandableTaskListAdapter = new ExpandableTaskListAdapter(this, taskList);
                 taskListView.setAdapter(expandableTaskListAdapter);
             }else {
                 txtEmptyTaskList.setVisibility(View.VISIBLE);
@@ -76,6 +77,7 @@ public class TaskListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intenti = new Intent(getBaseContext(), AddTaskActivity.class);
                 intenti.putExtra("PROJECT", project);
+                intenti.putExtra("ID", receivedId);
                 startActivityForResult(intenti, REQUEST_CODE_ADD_TASK);
             }
         });
@@ -92,10 +94,10 @@ public class TaskListActivity extends AppCompatActivity {
         });
     }
 
-    public static List<Task> getTasksOfProject(Project project) {
+    public static List<Task> getTasksOfProject(long id) {
         return new Select()
                 .from(Task.class)
-                .where("Project = ?", project.getId())
+                .where("Project = ?", id)
                 .execute();
     }
 
@@ -123,7 +125,7 @@ public class TaskListActivity extends AppCompatActivity {
                 if(taskDAO == null){
                     taskDAO = new TaskDAO(this);
                 }
-                taskList = getTasksOfProject(project);
+                taskList = getTasksOfProject(receivedId);
 
                 sortTasksOnPriority();
 
@@ -135,6 +137,7 @@ public class TaskListActivity extends AppCompatActivity {
                         txtEmptyTaskList.setVisibility(View.GONE);
                     }
                 }else {
+                    expandableTaskListAdapter.setTaskItems(taskList);
                     expandableTaskListAdapter.notifyDataSetChanged();
                 }
             }
