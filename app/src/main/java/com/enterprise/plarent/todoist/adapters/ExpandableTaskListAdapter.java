@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +26,10 @@ import java.util.Map;
  * Created by Plarent on 8/31/2017.
  */
 
-public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
+public class ExpandableTaskListAdapter extends BaseExpandableListAdapter  {
 
     private Activity activity;
     private List<Task> taskList;
-    private Map<String, List<Task>> underMenu;
-    private TaskDAO taskDAO;
 
     public ExpandableTaskListAdapter(Activity activity, List<Task> taskList) {
         this.activity = activity;
@@ -75,10 +74,13 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
     public static class ThisHolder{
         TextView taskTitle;
         ImageView taskPriority;
+        ImageView editbtn;
+        ImageView deletebtn;
+        RelativeLayout relativeLayout;
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         Task task = (Task)getGroup(groupPosition);
         ThisHolder thisHolder;
         if(convertView == null){
@@ -87,10 +89,38 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.task_row, null);
             thisHolder.taskPriority = (ImageView)convertView.findViewById(R.id.ItemTaskPriority);
             thisHolder.taskTitle = (TextView)convertView.findViewById(R.id.ItemTaskName);
+
+            thisHolder.relativeLayout = (RelativeLayout)convertView.findViewById(R.id.bottom_menu_btn);
+            thisHolder.editbtn = (ImageView)convertView.findViewById(R.id.edit_button);
+            thisHolder.deletebtn  = (ImageView)convertView.findViewById(R.id.delete_button);
+
             convertView.setTag(thisHolder);
         }else {
             thisHolder = (ThisHolder)convertView.getTag();
         }
+        thisHolder.relativeLayout.setVisibility(View.GONE);
+        thisHolder.editbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Task task = (Task)getGroup(groupPosition);
+                long id = task.getId();
+                Intent intent = new Intent(v.getContext(), AddTaskActivity.class);
+                intent.putExtra("EDIT_TASK", task);
+                intent.putExtra("TASK_ID", id);
+                activity.startActivity(intent);
+            }
+        });
+        thisHolder.deletebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Task task = (Task)getGroup(groupPosition);
+                task.delete();
+                taskList.clear();
+                taskList.addAll(taskList);
+                setTaskItems(taskList);
+                Toast.makeText(v.getContext(), "Task was deleted!", Toast.LENGTH_SHORT).show();
+            }
+        });
         thisHolder.taskPriority.setImageResource(task.getAssociatedDrawablePriority());
         thisHolder.taskTitle.setText(task.getTaskName());
         return convertView;
@@ -104,8 +134,6 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        taskDAO = new TaskDAO(activity);
-        String str = (String) getChild(groupPosition,childPosition);
 
         ThisHolderChild thisHolderChild;
         if(convertView == null){
@@ -119,9 +147,8 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
                 public void onClick(View v) {
                     Task task = (Task)getGroup(groupPosition);
                     task.delete();
-                    taskList.clear();
-                    taskList.addAll(taskList);
-                    setTaskItems(taskList);
+                    taskList.remove(groupPosition);
+                    notifyDataSetChanged();
                     Toast.makeText(v.getContext(), "Task was deleted!", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -151,5 +178,11 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter {
 
     public void setTaskItems(List<Task> listTask){
         this.taskList = listTask;
+    }
+
+    public void swapItems(List<Task> newItems){
+        taskList.clear();
+        taskList.addAll(newItems);
+        notifyDataSetChanged();
     }
 }

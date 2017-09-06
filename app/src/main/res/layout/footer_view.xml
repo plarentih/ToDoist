@@ -4,6 +4,6 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnGetMoreResults"
+        android:id="@+id/add_project_button"
         android:text="@string/add_project_txt" />
 </FrameLayout>

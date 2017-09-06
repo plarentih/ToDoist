@@ -73,11 +73,13 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent intent = getIntent();
         selectedTask = (Task) intent.getSerializableExtra("EDIT_TASK");
         taskId = intent.getLongExtra("TASK_ID", -1);
+
         Intent intenti = getIntent();
         gettedProject = (Project) intenti.getSerializableExtra("PROJECT");
+        receivedId = intent.getLongExtra("ID", -1);
+
         Intent inter = getIntent();
         Enum receivedPriority = (Task.TaskPriority)inter.getSerializableExtra("PRIORITY");
-        receivedId = intent.getLongExtra("ID", -1);
 
         /*if(receivedPriority != null){
             priority_enum = (Task.TaskPriority) receivedPriority;

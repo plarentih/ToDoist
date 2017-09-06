@@ -24,7 +24,7 @@
         android:id="@+id/img_project"
         android:layout_width="30dp"
         android:layout_height="20dp"
-        app:srcCompat="@drawable/folder"
+        app:srcCompat="@mipmap/folder"
         android:layout_below="@+id/txt_task_name"
         android:layout_alignBottom="@+id/spinner2"
         android:layout_alignLeft="@+id/spinner2"
@@ -72,7 +72,7 @@
         android:layout_width="30dp"
         android:layout_height="20dp"
         android:layout_marginTop="46dp"
-        app:srcCompat="@drawable/priority_flag"
+        app:srcCompat="@mipmap/priority_flag"
         android:layout_below="@+id/img_project"
         android:layout_alignLeft="@+id/img_project"
         android:layout_alignStart="@+id/img_project" />

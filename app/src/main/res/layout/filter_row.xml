@@ -14,7 +14,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="17dp"
         android:layout_weight="0.03"
-        android:src="@drawable/oil" />
+        android:src="@mipmap/oil" />
 
     <TextView
         android:id="@+id/priority_name"

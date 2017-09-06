@@ -29,7 +29,6 @@ public class TaskListActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_ADD_TASK = 40;
     public static final String SELECTED_ID = "extra_selected_id";
-    public static final String EXTRA_SELECTED_PROJECT_ID = "extra_key_selected_project_id";
 
     private ExpandableTaskListAdapter expandableTaskListAdapter;
 
@@ -55,7 +54,6 @@ public class TaskListActivity extends AppCompatActivity {
 
         if(intent != null){
             project = (Project)getIntent().getSerializableExtra("A");
-            //this.project = (Project)intent.getSerializableExtra(EXTRA_SELECTED_PROJECT_ID);
             receivedId  = intent.getLongExtra(SELECTED_ID, -1);
         }
 
@@ -92,6 +90,7 @@ public class TaskListActivity extends AppCompatActivity {
                 previousGroup = groupPosition;
             }
         });
+
     }
 
     public static List<Task> getTasksOfProject(long id) {

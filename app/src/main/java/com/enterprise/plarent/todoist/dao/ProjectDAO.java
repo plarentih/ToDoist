@@ -67,7 +67,7 @@ public class ProjectDAO {
                 dao.deleteTask(t);
             }
         }
-        mDatabase.delete(DBHelper.TABLE_PROJECTS, DBHelper.COLUMN_PROJECT_ID + " = " + id, null);
+        mDatabase.deletee(DBHelper.TABLE_PROJECTS, DBHelper.COLUMN_PROJECT_ID + " = " + id, null);
     }*/
 
     public List<Project> getAllProjects(){

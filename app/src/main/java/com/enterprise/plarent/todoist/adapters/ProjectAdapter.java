@@ -30,8 +30,8 @@ public class ProjectAdapter extends ArrayAdapter<Project> {
         ImageView colorCode;
     }
 
-    public ProjectAdapter(Context context, ArrayList<Project> projectsList){
-        super(context, 0);
+    public ProjectAdapter(Context context, List<Project> projectsList){
+        super(context, 0, projectsList);
         items.addAll(projectsList);
     }
 

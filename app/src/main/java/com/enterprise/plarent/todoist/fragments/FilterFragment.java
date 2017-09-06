@@ -24,7 +24,7 @@ public class FilterFragment extends Fragment {
     private FilterAdapter filterAdapter;
 
     private static final String[] priorities = {"Priority 1", "Priority 2", "Priority 3", "Priority 4"};
-    private static final int figure = R.drawable.oil;
+    private static final int figure = R.mipmap.oil;
 
     public FilterFragment(){
     }

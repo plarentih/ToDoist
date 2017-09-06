@@ -17,15 +17,16 @@
         android:textColor="@android:color/darker_gray"
         android:visibility="gone" />
 
-    <ListView
-        android:id="@+id/projectListView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/projectRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-    </ListView>
+        android:scrollbars="vertical"
+        android:layout_above="@+id/addProject_btn">
+    </android.support.v7.widget.RecyclerView>
 
     <Button
-        android:id="@+id/addProject_on_empty_list"
+        android:id="@+id/addProject_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_project_txt"

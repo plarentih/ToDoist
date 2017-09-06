@@ -71,7 +71,7 @@ public class TaskDAO {
 
     /*public void deleteTask(Task task){
         long id = task.getTaskId();
-        mDatabase.delete(DBHelper.TABLE_TASKS, DBHelper.COLUMN_TAKS_ID + " = " + id, null);
+        mDatabase.deletee(DBHelper.TABLE_TASKS, DBHelper.COLUMN_TAKS_ID + " = " + id, null);
     }*/
 
     public List<Task> getAllTasks(){
