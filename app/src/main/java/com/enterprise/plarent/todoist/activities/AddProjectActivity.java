@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.enterprise.plarent.todoist.adapters.CodeColorAdapter;
 import com.enterprise.plarent.todoist.model.Project;
-import com.enterprise.plarent.todoist.dao.ProjectDAO;
 import com.enterprise.plarent.todoist.fragments.ProjectFragment;
 import com.enterprise.plarent.todoist.R;
 
@@ -34,8 +33,6 @@ public class AddProjectActivity extends AppCompatActivity {
     private AlertDialog colorDialogObject;
     private CodeColorAdapter codeColorAdapter;
     private ListView listView;
-
-    private ProjectDAO projectDAO;
 
     public String[] colors = new String[] {"Red", "Green", "Blue", "Orange", "Silver"};
     public int[] colorCodess = new int[]{R.drawable.red, R.drawable.green, R.drawable.blue,
@@ -52,7 +49,6 @@ public class AddProjectActivity extends AppCompatActivity {
         color = Project.Color.RED;
         this.colorTextName = (TextView)findViewById(R.id.text_color);
         this.txtProjectName = (EditText)findViewById(R.id.txt_company_name);
-        this.projectDAO = new ProjectDAO(this);
 
         colorTextName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +142,6 @@ public class AddProjectActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        projectDAO.close();
     }
 }
 

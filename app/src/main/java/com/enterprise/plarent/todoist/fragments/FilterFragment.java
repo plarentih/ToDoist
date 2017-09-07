@@ -16,7 +16,6 @@ import android.widget.ListView;
 import com.enterprise.plarent.todoist.R;
 import com.enterprise.plarent.todoist.activities.ListPrioritiesActivity;
 import com.enterprise.plarent.todoist.adapters.FilterAdapter;
-import com.enterprise.plarent.todoist.dao.TaskDAO;
 
 public class FilterFragment extends Fragment {
 

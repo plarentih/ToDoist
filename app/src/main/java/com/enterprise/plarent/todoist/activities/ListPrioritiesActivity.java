@@ -7,14 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.activeandroid.query.Select;
 import com.enterprise.plarent.todoist.R;
-import com.enterprise.plarent.todoist.adapters.TaskAdapter;
-import com.enterprise.plarent.todoist.model.Task;
-import com.enterprise.plarent.todoist.dao.TaskDAO;
 import com.enterprise.plarent.todoist.adapters.TaskPriorityAdapter;
+import com.enterprise.plarent.todoist.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +19,6 @@ import java.util.List;
 public class ListPrioritiesActivity extends AppCompatActivity {
 
     private ExpandableListView listView;
-    private TaskDAO taskDAO;
     private List<Task> taskList;
     private TaskPriorityAdapter taskAdapter;
     private Task.TaskPriority priority;
@@ -33,7 +29,6 @@ public class ListPrioritiesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         listView = (ExpandableListView)findViewById(R.id.taskListView);
-        taskDAO = new TaskDAO(this);
         Intent intent = getIntent();
         String pri = (String) intent.getSerializableExtra("PRIORITY");
 
@@ -84,6 +79,13 @@ public class ListPrioritiesActivity extends AppCompatActivity {
                 .execute();
     }
 
+    public void collapseAllItems(){
+        int index = taskAdapter.getGroupCount();
+        for(int i = 0; i < index; i++){
+            listView.collapseGroup(i);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == TaskListActivity.REQUEST_CODE_ADD_TASK){
@@ -91,18 +93,17 @@ public class ListPrioritiesActivity extends AppCompatActivity {
                 if(taskList == null || !taskList.isEmpty()){
                     taskList = new ArrayList<Task>();
                 }
-                if(taskDAO == null){
-                    taskDAO = new TaskDAO(this);
-                }
                 taskList = getTasksOfPriority(priority);
 
                 if(taskAdapter == null){
                     taskAdapter = new TaskPriorityAdapter(this, taskList);
                     listView.setAdapter(taskAdapter);
+                    collapseAllItems();
                     if(listView.getVisibility() != View.VISIBLE){
                         listView.setVisibility(View.VISIBLE);
                     }
                 }else {
+                    collapseAllItems();
                     taskAdapter.setTaskItemsat(taskList);
                     taskAdapter.notifyDataSetChanged();
                 }

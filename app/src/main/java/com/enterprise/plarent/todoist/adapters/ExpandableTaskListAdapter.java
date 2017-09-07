@@ -3,7 +3,6 @@ package com.enterprise.plarent.todoist.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,9 @@ import android.widget.Toast;
 import com.enterprise.plarent.todoist.R;
 import com.enterprise.plarent.todoist.activities.AddTaskActivity;
 import com.enterprise.plarent.todoist.activities.TaskListActivity;
-import com.enterprise.plarent.todoist.dao.TaskDAO;
 import com.enterprise.plarent.todoist.model.Task;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Plarent on 8/31/2017.
@@ -134,7 +131,6 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter  {
     @Override
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         ThisHolderChild thisHolderChild;
         if(convertView == null){
             thisHolderChild = new ThisHolderChild();
@@ -147,7 +143,7 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter  {
                 public void onClick(View v) {
                     Task task = (Task)getGroup(groupPosition);
                     task.delete();
-                    taskList.remove(groupPosition);
+                    taskList.remove(task);
                     notifyDataSetChanged();
                     Toast.makeText(v.getContext(), "Task was deleted!", Toast.LENGTH_SHORT).show();
                 }
@@ -160,14 +156,37 @@ public class ExpandableTaskListAdapter extends BaseExpandableListAdapter  {
                     Intent intent = new Intent(v.getContext(), AddTaskActivity.class);
                     intent.putExtra("EDIT_TASK", task);
                     intent.putExtra("TASK_ID", id);
-                    activity.startActivity(intent);
+                    activity.startActivityForResult(intent, TaskListActivity.REQUEST_CODE_ADD_TASK);
                 }
             });
 
             convertView.setTag(thisHolderChild);
         }else {
             thisHolderChild = (ThisHolderChild) convertView.getTag();
+
+            thisHolderChild.deleteImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Task task = (Task)getGroup(groupPosition);
+                    task.delete();
+                    taskList.remove(task);
+                    notifyDataSetChanged();
+                    Toast.makeText(v.getContext(), "Task was deleted!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            thisHolderChild.editImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Task task = (Task)getGroup(groupPosition);
+                    long id = task.getId();
+                    Intent intent = new Intent(v.getContext(), AddTaskActivity.class);
+                    intent.putExtra("EDIT_TASK", task);
+                    intent.putExtra("TASK_ID", id);
+                    activity.startActivityForResult(intent, TaskListActivity.REQUEST_CODE_ADD_TASK);
+                }
+            });
         }
+
         return convertView;
     }
 

@@ -37,7 +37,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     }
 
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Task task = getItem(position);
         Holder holder;
         if(convertView == null){
@@ -52,7 +52,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             holder = (Holder) convertView.getTag();
         }
 
-        holder.editBtn.setOnClickListener(new View.OnClickListener() {
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

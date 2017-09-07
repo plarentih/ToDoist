@@ -2,7 +2,6 @@ package com.enterprise.plarent.todoist.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,15 +13,12 @@ import com.activeandroid.query.Select;
 import com.enterprise.plarent.todoist.R;
 import com.enterprise.plarent.todoist.adapters.ExpandableTaskListAdapter;
 import com.enterprise.plarent.todoist.adapters.TaskAdapter;
-import com.enterprise.plarent.todoist.dao.ProjectDAO;
-import com.enterprise.plarent.todoist.dao.TaskDAO;
 import com.enterprise.plarent.todoist.model.Project;
 import com.enterprise.plarent.todoist.model.Task;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
@@ -36,7 +32,6 @@ public class TaskListActivity extends AppCompatActivity {
     private TextView txtEmptyTaskList;
     private TaskAdapter taskAdapter;
     private List<Task> taskList;
-    private TaskDAO taskDAO;
     private Project project;
     private Task task;
     private long receivedId;
@@ -114,6 +109,13 @@ public class TaskListActivity extends AppCompatActivity {
         return taskList;
     }
 
+    public void collapseAllItems(){
+        int index = expandableTaskListAdapter.getGroupCount();
+        for(int i = 0; i < index; i++){
+            taskListView.collapseGroup(i);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE_ADD_TASK){
@@ -124,16 +126,18 @@ public class TaskListActivity extends AppCompatActivity {
                 taskList = getTasksOfProject(receivedId);
 
                 sortTasksOnPriority();
-
                 if(expandableTaskListAdapter == null){
                     expandableTaskListAdapter = new ExpandableTaskListAdapter(this, taskList);
                     taskListView.setAdapter(expandableTaskListAdapter);
+                    collapseAllItems();
                     if(taskListView.getVisibility() != View.VISIBLE){
                         taskListView.setVisibility(View.VISIBLE);
                         txtEmptyTaskList.setVisibility(View.GONE);
                     }
                 }else {
+                    collapseAllItems();
                     expandableTaskListAdapter.setTaskItems(taskList);
+                    sortTasksOnPriority();
                     expandableTaskListAdapter.notifyDataSetChanged();
                 }
             }

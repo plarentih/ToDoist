@@ -110,8 +110,13 @@ public class ProjectFragment extends Fragment implements ProjectViewAdapter.Clic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK){
+            //projectViewAdapter.swapItems(projectList);
             projectList.clear();
             projectList.addAll(getAll());
+            if(projectList != null){
+                emptyProjectList.setVisibility(View.GONE);
+                projectRecycleView.setVisibility(View.VISIBLE);
+            }
             projectViewAdapter.notifyDataSetChanged();
         }else{
             super.onActivityResult(requestCode, resultCode, data);

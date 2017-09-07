@@ -18,13 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
-import com.enterprise.plarent.todoist.adapters.PriorityDialogAdapter;
-import com.enterprise.plarent.todoist.model.Project;
-import com.enterprise.plarent.todoist.adapters.ProjectAdapter;
-import com.enterprise.plarent.todoist.dao.ProjectDAO;
 import com.enterprise.plarent.todoist.R;
+import com.enterprise.plarent.todoist.adapters.PriorityDialogAdapter;
+import com.enterprise.plarent.todoist.adapters.ProjectAdapter;
+import com.enterprise.plarent.todoist.model.Project;
 import com.enterprise.plarent.todoist.model.Task;
-import com.enterprise.plarent.todoist.dao.TaskDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +44,14 @@ public class AddTaskActivity extends AppCompatActivity {
     private ArrayList<Project> projectList;
     private long receivedId;
     private long taskId;
+    private long taskPriorityId;
 
     private Project project;
     private Task selectedTask;
+    private Task selectedPriorityTask;
 
     private Project gettedProject;
 
-    private ProjectDAO projectDAO;
-    private TaskDAO taskDAO;
 
     public static String[] priorityNames = new String[] {"Priority 1", "Priority 2", "Priority 3", "Priority 4"};
     public static int[]  priorityColors = new int[]{R.drawable.redp, R.drawable.orangep, R.drawable.lowp, R.drawable.whitep};
@@ -74,18 +72,24 @@ public class AddTaskActivity extends AppCompatActivity {
         selectedTask = (Task) intent.getSerializableExtra("EDIT_TASK");
         taskId = intent.getLongExtra("TASK_ID", -1);
 
+        Intent intentEditPriority = getIntent();
+        selectedPriorityTask = (Task)intentEditPriority.getSerializableExtra("EDIT_TASK_WITH_PRIORITY");
+        taskPriorityId = intentEditPriority.getLongExtra("TASK_ID_WITH_PRIORITY", -1);
+
         Intent intenti = getIntent();
         gettedProject = (Project) intenti.getSerializableExtra("PROJECT");
         receivedId = intent.getLongExtra("ID", -1);
 
+        //me shtu task prej priority list, te vec ni prioriteti
         Intent inter = getIntent();
         Enum receivedPriority = (Task.TaskPriority)inter.getSerializableExtra("PRIORITY");
 
-        /*if(receivedPriority != null){
+        if(receivedPriority != null){
             priority_enum = (Task.TaskPriority) receivedPriority;
+            projectName.setText(getAllProjects().get(0).getProjectName());
+            project = getAllProjects().get(0);
             projectLabel.setEnabled(false);
-            switch()
-        }*/
+        }
 
         if(gettedProject == null){
         }else {
@@ -96,9 +100,58 @@ public class AddTaskActivity extends AppCompatActivity {
 
         if(selectedTask == null){
         }else {
+            Task task = Task.load(Task.class, taskId);
+            project = task.getProject();
             txtTaskName.setText(selectedTask.getTaskName());
             projectName.setText(selectedTask.getProject().getProjectName());
-            taskPriority.setText(selectedTask.getTaskPriority().toString());
+            String prio = selectedTask.getTaskPriority().name();
+            switch(prio){
+                case "HIGH":
+                    taskPriority.setText("Priority 1");
+                    priority_enum = Task.TaskPriority.HIGH;
+                    break;
+                case "MEDIUM":
+                    taskPriority.setText("Priority 2");
+                    priority_enum = Task.TaskPriority.MEDIUM;
+                    break;
+                case "LOW":
+                    taskPriority.setText("Priority 3");
+                    priority_enum = Task.TaskPriority.LOW;
+                    break;
+                case "LOWEST":
+                    taskPriority.setText("Priority 4");
+                    priority_enum = Task.TaskPriority.LOWEST;
+                    break;
+            }
+        }
+
+        if(selectedPriorityTask == null){
+        }else {
+            Task task = Task.load(Task.class, taskPriorityId);
+            project = task.getProject();
+            txtTaskName.setText(selectedPriorityTask.getTaskName());
+            projectName.setText(selectedPriorityTask.getProject().getProjectName());
+            projectLabel.setClickable(false);
+            projectLabel.setEnabled(false);
+            String pro = selectedPriorityTask.getTaskPriority().name();
+            switch (pro){
+                case "HIGH":
+                    taskPriority.setText("Priority 1");
+                    priority_enum = Task.TaskPriority.HIGH;
+                    break;
+                case "MEDIUM":
+                    taskPriority.setText("Priority 2");
+                    priority_enum = Task.TaskPriority.MEDIUM;
+                    break;
+                case "LOW":
+                    taskPriority.setText("Priority 3");
+                    priority_enum = Task.TaskPriority.LOW;
+                    break;
+                case "LOWEST":
+                    taskPriority.setText("Priority 4");
+                    priority_enum = Task.TaskPriority.LOWEST;
+                    break;
+            }
         }
 
 
@@ -110,7 +163,21 @@ public class AddTaskActivity extends AppCompatActivity {
         });
 
         if(receivedPriority != null){
-
+            String as = receivedPriority.name();
+            switch (as){
+                case "HIGH":
+                    taskPriority.setText("Priority 1");
+                    break;
+                case "MEDIUM":
+                    taskPriority.setText("Priority 2");
+                    break;
+                case "LOW":
+                    taskPriority.setText("Priority 3");
+                    break;
+                case "LOWEST":
+                    taskPriority.setText("Priority 4");
+                    break;
+            }
         }else {
             projectLabel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,8 +189,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
 
         priorityDialogAdapter = new PriorityDialogAdapter(this, priorityNames, priorityColors);
-        projectDAO = new ProjectDAO(this);
-        taskDAO = new TaskDAO(this);
         projectList = (ArrayList<Project>) getAllProjects();
         projectAdapter = new ProjectAdapter(this, projectList);
     }
@@ -217,7 +282,17 @@ public class AddTaskActivity extends AppCompatActivity {
                 Task task = Task.load(Task.class, taskId);
                 task.taskName = taskTitle.toString();
                 task.taskPriority = priority_enum;
-                task.mProject = selectedTask.getProject();
+                task.mProject = project;
+                task.save();
+                setResult(RESULT_OK);
+                finish();
+                return true;
+            }
+            if(selectedPriorityTask != null){
+                Task task = Task.load(Task.class, taskPriorityId);
+                task.taskName = taskTitle.toString();
+                task.taskPriority = priority_enum;
+                task.mProject = project;
                 task.save();
                 setResult(RESULT_OK);
                 finish();
